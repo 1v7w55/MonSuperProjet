@@ -1,25 +1,40 @@
-import React, { useState } from "react";
-import "../main.css"
+import React, { useState } from 'react';
 
-function ImageUpload() {
-  const [image, setImage] = useState(null);
+function Image() {
+  const [fileData, setFileData] = useState(null);
 
-  const handleImageChange = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
-  };
+  const handleFileChange = (event) => {
+    setFileData(event.target.files[0]);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("test: submitting");
-  };
+
+    const formData = new FormData();
+    formData.append('file', fileData);
+
+    fetch('http://0.0.0.0:8000/', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error(error));
+
+    setFileData(null);
+  }
 
   return (
-    <form>
-      <input type="file" onChange={handleImageChange} />
-      {image && <img src={image} alt="uploaded" id="current_plane" />}
-      <button onClick={handleSubmit} type="submit">Submit</button>
+    <form onSubmit={handleSubmit}>
+      <label>
+        File:
+        <input type="file" onChange={handleFileChange} />
+      </label>
+      <button type="submit">Send</button>
     </form>
   );
 }
 
-export default ImageUpload;
+export default Image;
+
+

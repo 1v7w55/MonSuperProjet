@@ -6,7 +6,7 @@ from fastapi.responses import Response
 
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi")
 
-origins = ["http://localhost", "http://frontend:3000"]
+origins = ["http://localhost", "http://frontend:3000","http://0.0.0.0/"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,7 +26,6 @@ def root() -> Response:
 @app.get("/api/hello")
 def say_hello(name: str):
     return f"Hello {name}!"
-
 
 
 if __name__ == "__main__":

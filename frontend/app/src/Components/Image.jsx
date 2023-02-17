@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import '../main.css';
 function Image() {
   const [fileData, setFileData] = useState(null);
 
@@ -25,6 +25,7 @@ function Image() {
   }
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <label>
         File:
@@ -32,6 +33,8 @@ function Image() {
       </label>
       <button type="submit">Send</button>
     </form>
+    {fileData && <img src={URL.createObjectURL(fileData)} alt="preview" id="current_plane" />}
+    </>
   );
 }
 

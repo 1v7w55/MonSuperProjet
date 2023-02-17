@@ -1,43 +1,38 @@
 import React, { useState } from 'react';
-import '../main.css';
-function Image() {
-  const [fileData, setFileData] = useState(null);
 
-  const handleFileChange = (event) => {
-    setFileData(event.target.files[0]);
+function ImageUpload() {
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setImage(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
-    formData.append('file', fileData);
+    formData.append('file', image);
 
-    fetch('http://0.0.0.0:8000/', {
+    const response = await fetch('/api/modify/', {
       method: 'POST',
       body: formData
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
+    });
 
-    setFileData(null);
+    const blob = await response.blob();
+    setPreview(URL.createObjectURL(blob));
   }
 
   return (
-    <>
-    <form onSubmit={handleSubmit}>
-      <label>
-        File:
+    <div>
+      <form onSubmit={handleFormSubmit}>
         <input type="file" onChange={handleFileChange} />
-      </label>
-      <button type="submit">Send</button>
-    </form>
-    {fileData && <img src={URL.createObjectURL(fileData)} alt="preview" id="current_plane" />}
-    </>
+        <button type="submit">Convert</button>
+      </form>
+      {preview && <img src={preview}/>}
+    </div>
   );
 }
 
-export default Image;
-
-
+export default ImageUpload;

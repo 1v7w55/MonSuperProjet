@@ -1,9 +1,10 @@
 """Main module."""
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import Response, FileResponse
 import psycopg2 
+from PIL import Image
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import os
 
@@ -67,6 +68,12 @@ def root() -> Response:
 @app.get("/api/hello")
 def say_hello(name: str):
     return f"Hello {name}!"
+
+@app.post("/api/modify")
+def modify(file: UploadFile = File(...)):
+    image = Image.open(file.file).convert('L')
+    image.save("bw.jpg")
+    return FileResponse("bw.jpg")
 
 
 if __name__ == "__main__":

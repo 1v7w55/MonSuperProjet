@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, FileResponse
 import uvicorn
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi")
 
@@ -37,10 +37,10 @@ async def upload_image(file: UploadFile = File(...)):
 
     with Image.open(filename) as img:
         bw_img = img.convert('L')
-        bw_filename = f"bw_{filename}"
-        bw_img.save(bw_filename)
-
-    return {"filename": bw_filename}
+        edge_img = bw_img.filter(ImageFilter.FIND_EDGES)
+        edge_filename = f"edge_{filename}"
+        edge_img.save(edge_filename)
+    return {"filename": edge_filename}
 
 
 

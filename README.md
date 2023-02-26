@@ -12,7 +12,7 @@ sudo docker compose build
 sudo docker compose up
 ```
 
-*Reset the project to start again on a clear basis
+* Reset the project to start again on a clear basis
 * remove node_modules and update all packages
 
 * Installation of

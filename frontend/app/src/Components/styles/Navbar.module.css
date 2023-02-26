@@ -1,0 +1,28 @@
+.navbar {
+  background-color: #007bff;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.textl {
+  font-size: 24px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.link {
+  color: #fff;
+  margin-right: 20px;
+  font-size: 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  color: #007bff;
+}

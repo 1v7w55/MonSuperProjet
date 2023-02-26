@@ -38,6 +38,19 @@ services:
     environment:
       NODE_ENV: development
       CHOKIDAR_USEPOLLING: "true"
+  
+  aircraft:
+    container_name: aircraft
+    restart: unless-stopped
+    build:
+      context: aircraft
+      dockerfile: Dockerfile
+    volumes:
+      - ./aircraft/app:/app
+    ports:
+      - 8000:8000
+    environment:
+      NODE_ENV: development
 
   postgres:
     container_name: postgres

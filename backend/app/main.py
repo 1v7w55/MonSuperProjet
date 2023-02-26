@@ -5,6 +5,7 @@ from fastapi.responses import Response, FileResponse
 import uvicorn
 
 from PIL import Image, ImageFilter
+import requests 
 
 app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi")
 
@@ -40,6 +41,7 @@ async def upload_image(file: UploadFile = File(...)):
         edge_img = bw_img.filter(ImageFilter.FIND_EDGES)
         edge_filename = f"edge_{filename}"
         edge_img.save(edge_filename)
+    #requests.post("http://localhost:8000/", files={"file": open(edge_filename, "rb")})
     return {"filename": edge_filename}
 
 

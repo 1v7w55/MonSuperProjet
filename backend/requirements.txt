@@ -5,3 +5,4 @@ SQLAlchemy
 pydantic
 psycopg2
 Pillow==2.6.0
+requests

@@ -1,25 +1,40 @@
 import React, { useState } from "react";
-import ImageUpload from "./Components/Image";
 
 export const App = () => {
-  const [name, setName] = useState("");
+  const [file, setFile] = useState(null);
   const [apiMessage, setApiMessage] = useState("");
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setPreviewUrl(URL.createObjectURL(selectedFile));
+  };
 
   const handleClick = async () => {
-    if (name === "") return;
+    if (file === null) return;
 
-    const response = await fetch(`/api/hello?name=${name}`, { method: "GET" });
-    const message = await response.json();
-    setApiMessage(message);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("/api/upload", { method: "POST", body: formData });
+    const data = await response.json();
+
+    setApiMessage(data.filename);
   };
 
   return (
     <div>
-      <ImageUpload />
-      {/* Enter your name: <br />
-      <input onChange={(e) => setName(e.target.value)} value={name} />
-      <button onClick={handleClick}>Submit</button>
-      <p>API said: {apiMessage}</p> */}
+      Select an image file: <br />
+      <input type="file" onChange={handleFileChange} />
+      {previewUrl && <img src={previewUrl} alt="Preview upload" />}
+      <button onClick={handleClick}>Upload</button>
+      {apiMessage !== "" && (
+        <div>
+          <p>API said: {apiMessage}</p>
+          <img src={`/api/image/${apiMessage}`} alt="Return" />
+        </div>
+      )}
     </div>
   );
 };

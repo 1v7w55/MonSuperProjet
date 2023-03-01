@@ -21,6 +21,7 @@ function ImageUpload() {
     const response = await fetch("/api/upload", { method: "POST", body: formData });
     const data = await response.json();
     setData(data);
+    console.log(data)
     setPossibleAircraft(data.length);
   };
 
@@ -36,11 +37,15 @@ function ImageUpload() {
           {possibleAircraft > 0 ? (
             <div>
               <p className={styles.info}>Found {possibleAircraft}:</p>
-              <ul>
+              <ul className={styles.grid}>
                 {data.map((aircraft, index) => (
-                  <li key={index}>
-                    Name: {aircraft.name}, Confidence: {Math.round(aircraft.confidence * 100)}%
-                  </li>
+                  <div key={index} className={styles.square}>
+                    <li>
+                      <p className={styles.class}>Class: {aircraft.class}</p>
+                      <h2>Name: {aircraft.name}</h2> 
+                      <h4>Confidence: {Math.round(aircraft.confidence * 100)}%</h4>
+                    </li>
+                  </div>
                 ))}
               </ul>
             </div>

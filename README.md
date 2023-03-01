@@ -28,6 +28,5 @@ for the good functioning of Pillow (image editing)
 
 
 ## To do
-* Link w/ plane image
-* trying to use Harris function instead
+* <del>Link w/ plane image</del>
 * Connect to postgresql database to stock the images

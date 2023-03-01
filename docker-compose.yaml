@@ -40,10 +40,11 @@ services:
       CHOKIDAR_USEPOLLING: "true"
   
   aircraft:
-    container_name: aircraft
+    container_name: aircraftdetector
+    image: aircraftdetector:1.0.0
     restart: unless-stopped
     build:
-      context: aircraft
+      context: aircraftdetector
       dockerfile: Dockerfile
     volumes:
       - ./aircraft/app:/app

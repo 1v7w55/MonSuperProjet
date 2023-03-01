@@ -32,17 +32,31 @@ def say_hello(name: str):
 
 @app.post("/api/upload")
 async def upload_image(file: UploadFile = File(...)):
-    filename = file.filename
-    with open(filename, "wb") as buffer:
-        buffer.write(await file.read())
+    try:
+        filename = file.filename
+        with open(filename, "wb") as buffer:
+            buffer.write(await file.read())
 
-    with Image.open(filename) as img:
-        bw_img = img.convert('L')
-        edge_img = bw_img.filter(ImageFilter.FIND_EDGES)
-        edge_filename = f"edge_{filename}"
-        edge_img.save(edge_filename)
-    #requests.post("http://localhost:8000/", files={"file": open(edge_filename, "rb")})
-    return {"filename": edge_filename}
+        with Image.open(filename) as img:
+            bw_img = img
+            edge_img = bw_img.resize((640,640))
+            #edge_img = bw_img.filter(ImageFilter.FIND_EDGES)
+            edge_filename = f"edge_{filename}"
+            edge_img.save(edge_filename)
+            r = requests.post("http://aircraft:8000/", files={"file": open(edge_filename, "rb")}) 
+            if r.status_code == 200:
+            # http://0.0.0.0:8000/docs#/default/process__post
+                aircraft = r.json()
+                # print(aircraft[0])
+                # print("Name : ",aircraft[0]['name'])
+                # print("Confidence : ",round(aircraft[0]['confidence'],2)*100,"%")
+            else:
+                aircraft = None
+    except Exception as e:
+        problem = f"An error occurred: {e}"
+        print(f"An error occurred: {e}")
+        return {"error": "Pb with image"}
+    return aircraft
 
 
 

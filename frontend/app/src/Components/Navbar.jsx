@@ -4,7 +4,7 @@ import styles from './styles/Navbar.module.css';
 function Navbar() {
   return (
     <nav className={styles.navbar}>
-      <span className={styles.textl}>Trouver le coin</span>
+      <span className={styles.textl}></span>
       <div>
       </div>
     </nav>
